@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+  <input type="text" v-model="name" @keydown.enter="add">
+  <input type="text" v-model.number="price" @keydown.enter="add">
+  <input type="button" value="新增" @click="add">
+  <br>
+  <input type="text" v-model="search">
+  <hr>
+<table :style="{border:'1px solid + borderColor'}">
+  <tr>
+    <td>名稱</td>
+    <td>價格</td>
+    <td></td>
+  </tr>
+  <tr v-for="(td, i) in filteredtds">
+    <td>{{td.tdsname}}
+    </td>
+    <td>
+      {{td.tdsprice}}
+    </td>
+    <td>
+      <input type="button" value="x" @click="del(td.id)">
+    </td>
+  </tr>
+</table>
+</div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script>
+    new Vue({
+      el : '#app',
+      data () {
+        return{
+        name: '',
+        price:'',
+        tds: [],
+        search: [],
+        id:'1'
+        }
+      },
+      methods: {
+        add() {
+          this.tds.push({tdsname:this.name,tdsprice:this.price,id:this.id})
+          this.id++
+          this.name = '',
+          this.price = '0'
+        },
+        del(id) {
+          const i = this.tds.findIndex(td ==> {
+            return td.id ===id
+          })
+          this.tds.splice(i, 1)
+        }
+      },
+      computed: {
+        borderColor () {
+          return this.tds.length >=5 ? 'green' : this.tds.length >=2 ? 'blue' : this.tds.length === 0 ? 'red' : 'black'
+        },
+        filteredtds() {
+          return this.tds.filter(td =>{
+            return td.name.includes(this.search)
+          })
+        }
+      },
+      watch: {
+        foods:{
+          deep:true,
+          handler(value) {
+            localStorage.setItem('tds',JSON.stringify(value))
+          }
+        }
+      },
+      mounted(){
+        this.tds = JSON.parse(localStorage.getItem('tds')) || []
+        this.id = this.tds[this.tds.length - 1].id +1
+      }
+    })
+  </script>
+</body>
+</html>
