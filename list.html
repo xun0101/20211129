@@ -8,7 +8,7 @@
 </head>
 <body>
   <div id="app">
-    <input type="text" v-model="newitem" @keydown.enter="add" :style="{ border: '5px solid ' + borderColor }">
+    <input type="text" v-model="newitem" @keydown.enter="add" :style="{border:'5px solid ' + borderColor}">
     <input type="button" value="新增" @click="add">
     <br>
     <input type="button" value="全部刪除" @click="delAll">
@@ -30,24 +30,24 @@
       el: '#app',
       data () {
         return {
-          newitem: '',
-          items: []
+          newitem:'',
+          items:[]
         }
       },
       methods: {
-        add () {
-          if (this.newitem.length >= 2) {
-            this.items.push({ name: this.newitem, ok: false })
+        add() {
+          if (this.newitem.length >= 2){
+            this.items.push({name:this.newitem, ok: false})
             this.newitem = ''
           }
         },
-        del (i) {
+        del(i) {
           this.items.splice(i, 1)
         },
-        delAll () {
+        delAll() {
           this.items = []
         },
-        okAll (value) {
+        okAll(value) {
           this.items = this.items.map(item => {
             item.ok = value
             return item
@@ -61,7 +61,7 @@
       },
       watch: {
         items: {
-          deep: true,
+          deep:true,
           handler (value) {
             localStorage.setItem('list', JSON.stringify(value))
           }
